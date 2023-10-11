@@ -8,19 +8,20 @@ authors = [
 readme = {file = "README.md", content-type = "text/markdown"}
 license = {text = "AGPL"}
 dependencies = [
-    "blinker==1.6.2",
-    "email-validator==2.0.0.post2",
-    "flask-babel==3.1.0",
+    "blinker==1.6.3",
+    "email-validator==2.1.0.post1",
+    "flask-babel==4.0.0",
     "flask-mail==0.9.1",
-    "flask-migrate==4.0.4",
-    "flask-sqlalchemy==3.0.5",
+    "flask-migrate==4.0.5",
+    "flask-sqlalchemy==3.1.1",
     "flask-user==1.0.2.2",
     "flask==2.3.3",
-    "psycopg2-binary==2.9.7",
+    "psycopg2-binary==2.9.9",
     "pyyaml==6.0.1",
-    "sentry-sdk[flask]==1.30.0",
+    "sentry-sdk[flask]==1.32.0",
     "sqlalchemy-utils==0.41.1",
-    "stripe==6.4.0",
+    "stripe==7.0.0",
+    "werkzeug==2.3.7",
 ]
 requires-python = ">=3.11"
 
@@ -31,9 +32,9 @@ Homepage = "https://sumar.io"
 builder = [
     "bandit==1.7.5",
     "beautifulsoup4==4.12.2",
-    "black==23.9.1",
+    "black==23.10.1",
     "build==1.0.3",
-    "coverage==7.3.1",
+    "coverage==7.3.2",
     "html5lib==1.1",
     "pytest-cov==4.1.0",
     "pytest-env==1.0.1",
