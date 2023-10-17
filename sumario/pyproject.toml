@@ -45,3 +45,6 @@ builder = [
 
 [tool.setuptools.dynamic]
 version = {attr = "sumario.__version__"}
+
+[tool.black]
+line-length = 110

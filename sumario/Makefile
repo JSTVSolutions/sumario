@@ -70,11 +70,11 @@ migrate-db: install-deps
 
 .PHONY: format
 format: install-deps
-	@black -q -l 110 src tests
+	@black -q src tests
 
 .PHONY: check-style
 check-style: install-deps
-	@black -q -l 110 src tests --check
+	@black -q src tests --check
 
 .PHONY: check-quality
 check-quality: install-deps
