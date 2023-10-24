@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from flask import Flask
+
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+from .callbacks import register_callbacks
+from .components import babel, db, hashed_assets, mail, migrate, sentry, stripe, users
+from .components.hashedassets import hash_assets
+from .models import create_db, delete_db
+
 
 _url_for = Flask.url_for
 
@@ -11,19 +21,6 @@ def url_for(*args, **kwargs):
 
 
 Flask.url_for = url_for
-
-
-import os
-
-import flask
-
-from werkzeug.middleware.proxy_fix import ProxyFix
-
-import sumario.callbacks
-
-from .components import babel, db, hashed_assets, mail, migrate, sentry, stripe, users
-from .components.hashedassets import hash_assets
-from .models import create_db, delete_db
 
 
 def create_app(environment=os.environ["SUMARIO_ENVIRONMENT"]):
@@ -46,6 +43,8 @@ def create_app(environment=os.environ["SUMARIO_ENVIRONMENT"]):
     def _delete_db():
         """Delete all tables and delete database."""
         delete_db(db, app)
+
+    register_callbacks()
 
     return app
 

@@ -3,16 +3,21 @@
 import datetime
 import uuid
 
-from flask_user import UserMixin, current_user
+from flask_user import UserMixin
 
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.event import listen
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import declarative_base
 
 from sqlalchemy_utils.functions import create_database, database_exists, drop_database
 
 from .components.db import db
+
+
+ModelBase = declarative_base()
+ModelBase.query = db.session.query_property()
 
 
 class ImmutableError(Exception):
@@ -55,13 +60,6 @@ def has_one(*args, **kwargs):
 
 def _default_uuid():
     return str(uuid.uuid4())
-
-
-from sqlalchemy.orm import declarative_base
-
-
-ModelBase = declarative_base()
-ModelBase.query = db.session.query_property()
 
 
 class ModelMixin(object):

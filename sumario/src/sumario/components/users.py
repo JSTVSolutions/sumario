@@ -2,6 +2,7 @@
 
 from flask_babel import lazy_gettext as _
 
+import flask_user
 from flask_user import UserManager
 
 from wtforms import ValidationError
@@ -23,9 +24,6 @@ class CustomUserManager(UserManager):
 
 
 users = CustomUserManager(None, db, User)
-
-
-import flask_user
 
 
 flask_user.translation_utils.init_translations = lambda *args, **kwargs: None

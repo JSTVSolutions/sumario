@@ -20,7 +20,7 @@ VERSION := "0.1+$(GIT_COMMIT_HASH)"
 export VERSION
 
 .PHONY: all
-all: lint coverage
+all: sumario/lint sumario/coverage
 
 .PHONY: has-command-%
 has-command-%:

@@ -72,9 +72,13 @@ migrate-db: install-deps
 format: install-deps
 	@black -q src tests
 
+.PHONY: check-format
+check-format: install-deps
+	@black -q src tests --check
+
 .PHONY: check-style
 check-style: install-deps
-	@black -q src tests --check
+	@ruff check .
 
 .PHONY: check-quality
 check-quality: install-deps
@@ -85,7 +89,7 @@ check-vulnerabilities: install-deps
 	@safety check
 
 .PHONY: lint
-lint: check-style check-quality check-vulnerabilities
+lint: check-format check-style check-quality check-vulnerabilities
 
 .PHONY: test
 test: hash-assets

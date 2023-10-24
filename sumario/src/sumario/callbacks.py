@@ -6,7 +6,7 @@ from .components import db
 from .models import CreditPool, CreditPurchase
 
 
-def on_user_registered(app, user, **kwargs):
+def _on_user_registered(app, user, **kwargs):
     new_credit_pool = CreditPool()
     new_credit_pool.user_uuid = user.uuid
     new_credit_pool.num_credits = 25
@@ -23,4 +23,5 @@ def on_user_registered(app, user, **kwargs):
     db.session.commit()
 
 
-user_registered.connect(on_user_registered)
+def register_callbacks():
+    user_registered.connect(_on_user_registered)

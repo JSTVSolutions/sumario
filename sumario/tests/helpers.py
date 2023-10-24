@@ -12,7 +12,7 @@ from flask_user.signals import user_registered
 
 from sumario.app import run
 from sumario.components import db, users
-from sumario.models import CreditPool, Relay, User
+from sumario.models import Relay, User
 
 
 def check_is_equal(n1, n2):
@@ -22,6 +22,21 @@ def check_is_equal(n1, n2):
 def url_for(*args, **kwargs):
     kwargs["_external"] = True
     return _url_for(*args, **kwargs)
+
+
+def login(test_client, test_user):
+    login_data = {"email": test_user.email, "password": "password"}
+    response = test_client.post(url_for("user.login"), follow_redirects=True, data=login_data)
+    check_is_equal(response.status_code, 200)
+
+
+def _post(fn):
+    def wrapper(*args, **kwargs):
+        headers = kwargs.setdefault("headers", {})
+        headers["X-Forwarded-For"] = "127.0.0.1"
+        return fn(*args, **kwargs)
+
+    return wrapper
 
 
 def _with_tst_request_context(create_app, fn):
@@ -46,35 +61,6 @@ def _with_tst_request_context(create_app, fn):
 with_tst_request_context = partial(_with_tst_request_context, run)
 
 
-def _post(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        headers = kwargs.setdefault("headers", {})
-        headers["X-Forwarded-For"] = "127.0.0.1"
-        return fn(*args, **kwargs)
-
-    return wrapper
-
-
-def with_tst_client(fn):
-    @wraps(fn)
-    def test_with_test_client_wrapper(*args, **kwargs):
-        test_app = kwargs["test_app"]
-        with test_app.test_client() as test_client:
-            test_client.post = _post(test_client.post)
-            kwargs["test_client"] = test_client
-            rc = fn(*args, **kwargs)
-        return rc
-
-    return test_with_test_client_wrapper
-
-
-def login(test_client, test_user):
-    login_data = {"email": test_user.email, "password": "password"}
-    response = test_client.post(url_for("user.login"), follow_redirects=True, data=login_data)
-    check_is_equal(response.status_code, 200)
-
-
 def with_tst_user(fn):
     @wraps(fn)
     def test_with_test_user_wrapper(*args, **kwargs):
@@ -94,15 +80,6 @@ def with_tst_user(fn):
         return rc
 
     return test_with_test_user_wrapper
-
-
-def _post(fn):
-    def wrapper(*args, **kwargs):
-        headers = kwargs.setdefault("headers", {})
-        headers["X-Forwarded-For"] = "127.0.0.1"
-        return fn(*args, **kwargs)
-
-    return wrapper
 
 
 def with_tst_client(fn):
