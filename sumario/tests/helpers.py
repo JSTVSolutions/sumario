@@ -25,7 +25,7 @@ def url_for(*args, **kwargs):
 
 
 def login(test_client, test_user):
-    login_data = {"email": test_user.email, "password": "password"}
+    login_data = {"email": test_user.email, "password": "password", "next": "/"}
     response = test_client.post(url_for("user.login"), follow_redirects=True, data=login_data)
     check_is_equal(response.status_code, 200)
 
