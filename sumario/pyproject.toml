@@ -38,7 +38,7 @@ builder = [
     "pytest-env==1.1.1",
     "pytest==7.4.3",
     "ruff==0.1.5",
-    "safety==2.3.4",
+    "safety==2.3.5",
     "twine==4.0.2",
     "wheel==0.41.3",
 ]
