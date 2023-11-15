@@ -1,5 +1,5 @@
 # -*- coding: utf-8; mode: dockerfile; -*-
-FROM registry.fedoraproject.org/fedora:38
+FROM registry.fedoraproject.org/fedora:39
 LABEL maintainer="Tom Vaughan <tvaughan@tocino.cl>"
 
 LABEL traefik.enable="true"
