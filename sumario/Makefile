@@ -1,6 +1,6 @@
 # -*- coding: utf-8; mode: makefile-gmake; -*-
 
-MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-print-directory --warn-undefined-variables
 
 SHELL := bash
 .SHELLFLAGS := -euo pipefail -c
