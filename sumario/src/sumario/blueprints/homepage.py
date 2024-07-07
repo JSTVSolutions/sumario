@@ -8,6 +8,10 @@ from ..components import users
 homepage_blueprint = Blueprint("sumario", __name__)
 
 
+@homepage_blueprint.route("/robots.txt")
+def robots_txt():
+    return render_template("sumario/robots.txt")
+
 @homepage_blueprint.route("/")
 def homepage():
     extra_context = {
