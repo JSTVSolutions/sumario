@@ -10,7 +10,8 @@ homepage_blueprint = Blueprint("sumario", __name__)
 
 @homepage_blueprint.route("/robots.txt")
 def robots_txt():
-    return render_template("sumario/robots.txt")
+    return render_template("sumario/robots.txt"), {"Content-Type": "text/plain; charset=utf-8"}
+
 
 @homepage_blueprint.route("/")
 def homepage():

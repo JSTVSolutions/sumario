@@ -14,7 +14,7 @@ def test_robots_txt(*args, **kwargs):
 
     response = test_client.get(url_for("sumario.robots_txt"))
     check_is_equal(response.status_code, 200)
-    check_is_equal(response.headers["Content-Type"], "text/html; charset=utf-8")
+    check_is_equal(response.headers["Content-Type"], "text/plain; charset=utf-8")
 
 
 @with_tst_request_context
