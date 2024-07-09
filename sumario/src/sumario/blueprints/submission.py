@@ -39,6 +39,9 @@ def submission(uuid):
     except sqlalchemy.exc.StatementError:
         abort(404)
 
+    if not request.form:
+        return redirect(_build_url(request, url_for("submission.possiblebot")))
+
     if not _user_in_good_standing(relay.user):
         return redirect(_build_url(request, url_for("submission.nocredits")))
 
@@ -73,3 +76,8 @@ def success():
 @submission_blueprint.route("/nocredits", methods=["GET"])
 def nocredits():
     return render_template("sumario/nocredits.html", referrer=urlunquote(request.args.get("referrer", "")))
+
+
+@submission_blueprint.route("/possiblebot", methods=["GET"])
+def possiblebot():
+    return render_template("sumario/possiblebot.html", referrer=urlunquote(request.args.get("referrer", "")))

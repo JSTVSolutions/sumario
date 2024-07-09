@@ -149,3 +149,21 @@ def test_submission_nocredits_with_referrer(*args, **kwargs):
     bs = BS(response.data, "html5lib")
     referrer = bs.find("a", id="referrer")
     check_is_equal(referrer["href"], "Hello, world!")
+
+
+@with_tst_request_context
+@with_tst_client
+@with_tst_user
+@with_tst_relay
+def test_submission_possible_bot(*args, **kwargs):
+    test_client = kwargs["test_client"]
+    test_relay = kwargs["test_relay"]
+
+    response = test_client.post(url_for("submission.submission", uuid=test_relay.uuid))
+    check_is_equal(response.status_code, 302)
+
+    location = response.headers["Location"]
+    check_is_equal(location, "http://localhost:8443/submission/possiblebot?referrer=")
+
+    response = test_client.get(location)
+    check_is_equal(response.status_code, 200)

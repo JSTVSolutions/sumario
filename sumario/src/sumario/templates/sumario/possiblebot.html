@@ -1,0 +1,23 @@
+{%- extends "sumario/sumario.html" -%}
+
+{%- block columns -%}
+  <div class="columns is-centered">
+    <div class="column is-two-thirds">
+      <div class="notification is-warning">
+        <p>
+          {% trans %}
+            We're sorry but we cannot process this submission because nothing
+            was submitted.
+          {% endtrans %}
+          <a
+            class="is-link"
+            id="referrer"
+            href="{{ referrer|default('#', true) }}"
+          >
+            {{ _("Back to the original website") }}</a
+          >.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
