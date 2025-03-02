@@ -16,15 +16,20 @@ RUN sudo dnf config-manager setopt install_weak_deps=0                          
 
 RUN rm -rf /var/cache/{dnf,yum}/*                                               \
     && dnf install -y                                                           \
+        automake                                                                \
         dumb-init                                                               \
+        gcc                                                                     \
         git                                                                     \
+        libpq-devel                                                             \
         make                                                                    \
         nodejs-npm                                                              \
         postgresql                                                              \
-        python3-gunicorn                                                        \
+        python3-devel                                                           \
         python3-pip                                                             \
     && rm -rf /var/cache/{dnf,yum}/*                                            \
     && dnf clean all
+
+RUN python3 -m pip install uv==0.6.3
 
 RUN npm install -g uglify-js uglifycss
 
@@ -33,3 +38,5 @@ WORKDIR /mnt/workdir
 ENTRYPOINT ["dumb-init", "--"]
 
 CMD ["bash"]
+
+ENV UV_LINK_MODE=copy

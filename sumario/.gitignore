@@ -2,7 +2,6 @@
 *.pyc
 .cache/
 .coverage
-.install-deps
 .pytest*
 htmlcov/
 node_modules/

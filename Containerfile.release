@@ -11,7 +11,6 @@ RUN sudo dnf config-manager setopt install_weak_deps=0                          
 
 RUN rm -rf /var/cache/{dnf,yum}/*                                               \
     && dnf install -y                                                           \
-        python3-gunicorn                                                        \
         python3-pip                                                             \
     && rm -rf /var/cache/{dnf,yum}/*                                            \
     && dnf clean all

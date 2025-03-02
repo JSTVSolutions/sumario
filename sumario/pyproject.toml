@@ -1,46 +1,45 @@
 [project]
-name = "sumario"
-dynamic = ["version"]
 description = "The best way to handle forms on any website."
+dynamic = ["version"]
+license = {text = "AGPL"}
+name = "sumario"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.11"
 authors = [
     {name = "JSTV Solutions", email = "sumario@jstvsolutions.com"},
 ]
-readme = {file = "README.md", content-type = "text/markdown"}
-license = {text = "AGPL"}
 dependencies = [
-    "blinker==1.7.0",
-    "email-validator==2.1.0.post1",
-    "flask-babel==4.0.0",
-    "flask-mail==0.9.1",
-    "flask-migrate==4.0.5",
-    "flask-sqlalchemy==3.1.1",
+    "blinker",
+    "email-validator",
+    "flask-babel",
+    "flask-mail",
+    "flask-migrate",
+    "flask-sqlalchemy",
     "flask-user==1.0.2.2",
-    "flask==3.0.0",
-    "psycopg2-binary==2.9.9",
-    "pyyaml==6.0.1",
-    "sentry-sdk[flask]==1.39.1",
-    "sqlalchemy-utils==0.41.1",
-    "stripe==7.9.0",
+    "flask",
+    "gunicorn",
+    "psycopg2-binary",
+    "pyyaml",
+    "sentry-sdk[flask]",
+    "sqlalchemy-utils",
+    "stripe",
 ]
-requires-python = ">=3.11"
+urls = {homepage = "https://sumar.io"}
 
-[project.urls]
-Homepage = "https://sumar.io"
-
-[project.optional-dependencies]
-builder = [
-    "bandit==1.7.6",
-    "beautifulsoup4==4.12.2",
-    "build==1.0.3",
-    "coverage==7.3.3",
-    "html5lib==1.1",
-    "pytest-cov==4.1.0",
-    "pytest-env==1.1.3",
-    "pytest==7.4.3",
-    "ruff==0.1.8",
-    "safety==2.3.5",
-    "twine==5.1.1",
-    "wheel==0.42.0",
+[dependency-groups]
+dev = [
+    "bandit",
+    "beautifulsoup4",
+    "build",
+    "coverage",
+    "html5lib",
+    "pytest-cov",
+    "pytest-env",
+    "pytest",
+    "ruff",
+    "safety",
+    "twine",
+    "wheel",
 ]
 
 [tool.setuptools.dynamic]
@@ -48,3 +47,6 @@ version = {attr = "sumario.__version__"}
 
 [tool.ruff]
 line-length = 110
+
+[tool.uv]
+package = true
