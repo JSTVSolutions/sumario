@@ -40,7 +40,7 @@ fi
 
 readonly DOCKER_EXTRA_RUN_ARGS
 
-FLY_IMAGE=docker.io/flyio/flyctl:v0.1.111
+FLY_IMAGE=docker.io/flyio/flyctl:v0.3.87
 readonly FLY_IMAGE
 
 docker pull -q $FLY_IMAGE
