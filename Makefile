@@ -194,7 +194,7 @@ postgres/run: is-defined-POSTGRES_HOSTNAME is-defined-POSTGRES_TCP_PORT is-defin
 	    -e POSTGRES_USER=$$POSTGRES_USERNAME                                \
 	    -p $$POSTGRES_TCP_PORT:$$POSTGRES_TCP_PORT                          \
 	    -v sumario-postgres-data:/var/lib/postgresql/data                   \
-	    docker.io/library/postgres:15                                       \
+	    docker.io/library/postgres:17                                       \
 	    -p $$POSTGRES_TCP_PORT
 
 .PHONY: traefik/run
