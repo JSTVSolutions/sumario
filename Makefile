@@ -208,7 +208,7 @@ traefik/run: container/create-network-sumario
 	    -v $(HERE)/traefik:/mnt/workdir                                     \
 	    -v /var/run/docker.sock:/var/run/docker.sock:ro                     \
 	    -w /mnt/workdir                                                     \
-	    docker.io/library/traefik:v2.10.5
+	    docker.io/library/traefik:v3.3.4
 
 FLY := $(HERE)/.bin/fly
 
