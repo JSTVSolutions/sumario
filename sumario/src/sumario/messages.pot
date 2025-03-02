@@ -1,20 +1,20 @@
 # Translations template for PROJECT.
-# Copyright (C) 2023 ORGANIZATION
+# Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-11 20:32+0000\n"
+"POT-Creation-Date: 2025-03-02 14:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: src/sumario/forms.py:25 src/sumario/forms.py:40 src/sumario/forms.py:62
 msgid "Name"
@@ -45,10 +45,12 @@ msgid "Delete"
 msgstr ""
 
 #: src/sumario/blueprints/account.py:28
+#, python-brace-format
 msgid "{credits_purchased} Sumario Credits"
 msgstr ""
 
 #: src/sumario/blueprints/account.py:52
+#, python-brace-format
 msgid "Cool! You bought an additional {credits} credits for ${amount} {currency}"
 msgstr ""
 
@@ -80,7 +82,7 @@ msgstr ""
 msgid "Everything is OK!"
 msgstr ""
 
-#: src/sumario/blueprints/homepage.py:15
+#: src/sumario/blueprints/homepage.py:20
 msgid "world"
 msgstr ""
 
@@ -88,7 +90,8 @@ msgstr ""
 msgid "Form submission from Sumario"
 msgstr ""
 
-#: src/sumario/components/users.py:21
+#: src/sumario/components/users.py:22
+#, python-brace-format
 msgid "Password must have at least {minchars} characters"
 msgstr ""
 
@@ -432,7 +435,12 @@ msgid "We're sorry but we cannot process this submission as the account owner ha
 msgstr ""
 
 #: src/sumario/templates/sumario/nocredits.html:13
+#: src/sumario/templates/sumario/possiblebot.html:17
 msgid "Back to the original website"
+msgstr ""
+
+#: src/sumario/templates/sumario/possiblebot.html:8
+msgid "We're sorry but we cannot process this submission because nothing was submitted."
 msgstr ""
 
 #: src/sumario/templates/sumario/submission.txt:1
