@@ -1,5 +1,5 @@
 # -*- coding: utf-8; mode: dockerfile; -*-
-FROM registry.fedoraproject.org/fedora:40
+FROM registry.fedoraproject.org/fedora:41
 LABEL maintainer="Tom Vaughan <tvaughan@tocino.cl>"
 
 LABEL traefik.enable="true"
@@ -9,9 +9,9 @@ LABEL traefik.http.routers.sumario-backend.service="sumario-backend@docker"
 LABEL traefik.http.routers.sumario-backend.tls="true"
 LABEL traefik.http.services.sumario-backend.loadbalancer.server.port="3000"
 
-ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 TZ=UTC
 
-RUN dnf alias add install="\install --setopt=install_weak_deps=False --best"    \
+RUN sudo dnf config-manager setopt install_weak_deps=0                          \
     && rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo
 
 RUN rm -rf /var/cache/{dnf,yum}/*                                               \
