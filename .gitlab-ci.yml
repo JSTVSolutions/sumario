@@ -13,8 +13,6 @@ stages:
 
 lint:
   stage: check
-  services:
-    - docker:dind
   variables:
     POSTGRES_HOSTNAME: unused
     POSTGRES_TCP_PORT: unused
@@ -28,7 +26,6 @@ lint:
 test:
   stage: check
   services:
-    - docker:dind
     - postgres:15
   variables:
     POSTGRES_USER: "postgres"
@@ -44,8 +41,6 @@ test:
 
 publish-whl:
   stage: publish-whl
-  services:
-    - docker:dind
   variables:
     POSTGRES_HOSTNAME: unused
     POSTGRES_TCP_PORT: unused
@@ -60,8 +55,6 @@ publish-whl:
 
 push-release:
   stage: push-release
-  services:
-    - docker:dind
   script:
     - | # https://gitlab.com/gitlab-org/gitlab-foss/-/issues/19421
       git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
@@ -71,8 +64,6 @@ push-release:
 
 deploy:
   stage: deploy
-  services:
-    - docker:dind
   environment:
     name: production
   variables:

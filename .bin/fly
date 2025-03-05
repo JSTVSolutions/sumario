@@ -20,9 +20,9 @@ function on_error() {
 
 trap 'on_error $? $LINENO' ERR
 
-if ! command -v docker > /dev/null; then
+if ! command -v podman > /dev/null; then
     # shellcheck disable=SC2016
-    echo 1>&2 'The command `docker` does not exist in PATH'
+    echo 1>&2 'The command `podman` does not exist in PATH'
     exit 1
 fi
 
@@ -32,19 +32,19 @@ if [[ -z ${FLY_ACCESS_TOKEN:-} ]]; then
     exit 1
 fi
 
-IFS=$' ' DOCKER_EXTRA_RUN_ARGS="${DOCKER_EXTRA_RUN_ARGS:-}"
+IFS=$' ' PODMAN_EXTRA_RUN_ARGS="${PODMAN_EXTRA_RUN_ARGS:-}"
 
 if test -t 0; then
-    IFS=$' ' DOCKER_EXTRA_RUN_ARGS="-it $DOCKER_EXTRA_RUN_ARGS"
+    IFS=$' ' PODMAN_EXTRA_RUN_ARGS="-it $PODMAN_EXTRA_RUN_ARGS"
 fi
 
-readonly DOCKER_EXTRA_RUN_ARGS
+readonly PODMAN_EXTRA_RUN_ARGS
 
 FLY_IMAGE=docker.io/flyio/flyctl:v0.3.87
 readonly FLY_IMAGE
 
-docker pull -q $FLY_IMAGE
-docker run --rm $DOCKER_EXTRA_RUN_ARGS                                          \
+podman pull -q $FLY_IMAGE
+podman run --rm $PODMAN_EXTRA_RUN_ARGS                                          \
     -e HOME=/tmp                                                                \
     -v "$PWD":/mnt/workdir                                                      \
     -v /var/run/docker.sock:/var/run/docker.sock:ro                             \

@@ -2,7 +2,7 @@
 
 ## Quick start
 
-* Install [Docker](https://docker.com)
+* Install [Podman](https://podman.io)
 
 * Set some environment variables
 

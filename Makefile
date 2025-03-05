@@ -35,20 +35,20 @@ is-repo-clean: has-command-git
 	@git diff-index --quiet HEAD --
 
 .PHONY: container/login
-container/login: is-defined-GITLAB_USERNAME is-defined-GITLAB_PASSWORD is-defined-CONTAINER_REGISTRY has-command-docker
-	@echo $$GITLAB_PASSWORD | docker login --username $$GITLAB_USERNAME --password-stdin $(CONTAINER_REGISTRY)
+container/login: is-defined-GITLAB_USERNAME is-defined-GITLAB_PASSWORD is-defined-CONTAINER_REGISTRY has-command-podman
+	@echo $$GITLAB_PASSWORD | podman login --username $$GITLAB_USERNAME --password-stdin $(CONTAINER_REGISTRY)
 
 .PHONY: container/create-network-%
-container/create-network-%: has-command-docker
-	@docker network create --driver bridge $* || true
+container/create-network-%: has-command-podman
+	@podman network create --driver bridge $* || true
 
 .PHONY: contaier/build-builder
-container/build-builder: is-defined-BUILDER_IMAGE has-command-docker container/create-network-sumario
-	@docker build --pull -f Containerfile.builder -t $(BUILDER_IMAGE) .
+container/build-builder: is-defined-BUILDER_IMAGE has-command-podman container/create-network-sumario
+	@podman build --pull -f Containerfile.builder -t $(BUILDER_IMAGE) .
 
 .PHONY: container/run-builder
 container/run-builder: container/build-builder
-	@docker run --network sumario --rm                                      \
+	@podman run --network sumario --rm                                      \
 	    --name sumario.internal                                             \
 	    -e POSTGRES_HOSTNAME=$$POSTGRES_HOSTNAME                            \
 	    -e POSTGRES_TCP_PORT=$$POSTGRES_TCP_PORT                            \
@@ -67,7 +67,7 @@ container/run-builder: container/build-builder
 
 .PHONY: sumario/build-whl
 sumario/build-whl: is-repo-clean container/build-builder
-	@docker run --rm                                                        \
+	@podman run --rm                                                        \
 	    -e POSTGRES_HOSTNAME=$$POSTGRES_HOSTNAME                            \
 	    -e POSTGRES_TCP_PORT=$$POSTGRES_TCP_PORT                            \
 	    -e POSTGRES_USERNAME=$$POSTGRES_USERNAME                            \
@@ -86,7 +86,7 @@ sumario/build-whl: is-repo-clean container/build-builder
 
 .PHONY: sumario/publish-whl
 sumario/publish-whl: container/build-builder
-	@docker run --rm                                                        \
+	@podman run --rm                                                        \
 	    -e GITLAB_USERNAME=$$GITLAB_USERNAME                                \
 	    -e GITLAB_PASSWORD=$$GITLAB_PASSWORD                                \
 	    -e POSTGRES_HOSTNAME=$$POSTGRES_HOSTNAME                            \
@@ -106,15 +106,15 @@ sumario/publish-whl: container/build-builder
 	    make publish-whl
 
 .PHONY: container/build-release
-container/build-release: is-defined-RELEASE_IMAGE has-command-docker
-	@docker build --pull -f Containerfile.release -t $(RELEASE_IMAGE) .     \
+container/build-release: is-defined-RELEASE_IMAGE has-command-podman
+	@podman build --pull -f Containerfile.release -t $(RELEASE_IMAGE) .     \
 	    --build-arg GITLAB_USERNAME=$$GITLAB_USERNAME                       \
 	    --build-arg GITLAB_PASSWORD=$$GITLAB_PASSWORD                       \
 	    --build-arg VERSION=$(VERSION)
 
 .PHONY: container/run-release
 container/run-release: container/build-release
-	@docker run --network sumario --rm                                      \
+	@podman run --network sumario --rm                                      \
 	    --name sumario.internal                                             \
 	    -e POSTGRES_HOSTNAME=$$POSTGRES_HOSTNAME                            \
 	    -e POSTGRES_TCP_PORT=$$POSTGRES_TCP_PORT                            \
@@ -131,16 +131,16 @@ container/run-release: container/build-release
 	    $(RELEASE_IMAGE)
 
 .PHONY: container/push-release
-container/push-release: is-defined-RELEASE_IMAGE has-command-docker container/login
-	@docker push $(RELEASE_IMAGE)
+container/push-release: is-defined-RELEASE_IMAGE has-command-podman container/login
+	@podman push $(RELEASE_IMAGE)
 
 .PHONY: container/pull-release
-container/pull-release: is-defined-RELEASE_IMAGE has-command-docker container/login
-	@docker pull -q $(RELEASE_IMAGE)
+container/pull-release: is-defined-RELEASE_IMAGE has-command-podman container/login
+	@podman pull -q $(RELEASE_IMAGE)
 
 .PHONY: sumario/%
 sumario/%: is-defined-GITLAB_USERNAME is-defined-GITLAB_PASSWORD is-defined-POSTGRES_HOSTNAME is-defined-POSTGRES_TCP_PORT is-defined-POSTGRES_USERNAME is-defined-POSTGRES_PASSWORD is-defined-SECRET_KEY container/build-builder
-	@docker run --network sumario --rm                                      \
+	@podman run --network sumario --rm                                      \
 	    --name sumario.internal                                             \
 	    -e GITLAB_USERNAME=$$GITLAB_USERNAME                                \
 	    -e GITLAB_PASSWORD=$$GITLAB_PASSWORD                                \
@@ -162,7 +162,7 @@ sumario/%: is-defined-GITLAB_USERNAME is-defined-GITLAB_PASSWORD is-defined-POST
 
 .PHONY: sumario/shell
 sumario/shell: is-defined-GITLAB_USERNAME is-defined-GITLAB_PASSWORD is-defined-POSTGRES_HOSTNAME is-defined-POSTGRES_TCP_PORT is-defined-POSTGRES_USERNAME is-defined-POSTGRES_PASSWORD is-defined-SECRET_KEY container/build-builder
-	@docker run --network sumario --rm -it                                  \
+	@podman run --network sumario --rm -it                                  \
 	    --name sumario.internal                                             \
 	    -e GITLAB_USERNAME=$$GITLAB_USERNAME                                \
 	    -e GITLAB_PASSWORD=$$GITLAB_PASSWORD                                \
@@ -183,12 +183,12 @@ sumario/shell: is-defined-GITLAB_USERNAME is-defined-GITLAB_PASSWORD is-defined-
 	    make shell
 
 .PHONY: sumario/exec-%
-sumario/exec-%: has-command-docker
-	@docker exec -it sumario.internal make $*
+sumario/exec-%: has-command-podman
+	@podman exec -it sumario.internal make $*
 
 .PHONY: postgres/run
 postgres/run: is-defined-POSTGRES_HOSTNAME is-defined-POSTGRES_TCP_PORT is-defined-POSTGRES_USERNAME is-defined-POSTGRES_PASSWORD container/create-network-sumario
-	@docker run --network sumario --rm -it                                  \
+	@podman run --network sumario --rm -it                                  \
 	    --name $$POSTGRES_HOSTNAME                                          \
 	    -e POSTGRES_PASSWORD=$$POSTGRES_PASSWORD                            \
 	    -e POSTGRES_USER=$$POSTGRES_USERNAME                                \
@@ -199,7 +199,7 @@ postgres/run: is-defined-POSTGRES_HOSTNAME is-defined-POSTGRES_TCP_PORT is-defin
 
 .PHONY: traefik/run
 traefik/run: container/create-network-sumario
-	@docker run --network sumario --rm                                      \
+	@podman run --network sumario --rm                                      \
 	    --name traefik.internal                                             \
 	    --privileged                                                        \
 	    -p 8080:8080                                                        \
@@ -282,11 +282,11 @@ fly/status: is-defined-SLUG
 	done
 
 .PHONY: fly/forward-postgres
-fly/forward-postgres: export DOCKER_EXTRA_RUN_ARGS=-p 5432:5432
+fly/forward-postgres: export PODMAN_EXTRA_RUN_ARGS=-p 5432:5432
 fly/forward-postgres: is-defined-SLUG
 	@$(FLY) proxy 5432:5432 -b 0.0.0.0 -a sumario-postgres-$$SLUG
 
 .PHONY: fly/forward-backend
-fly/forward-backend: export DOCKER_EXTRA_RUN_ARGS=-p 3000:3000
+fly/forward-backend: export PODMAN_EXTRA_RUN_ARGS=-p 3000:3000
 fly/forward-backend: is-defined-SLUG
 	@$(FLY) proxy 3000:3000 -b 0.0.0.0 -a sumario-backend-$$SLUG
