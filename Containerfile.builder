@@ -29,7 +29,7 @@ RUN rm -rf /var/cache/{dnf,yum}/*                                               
     && rm -rf /var/cache/{dnf,yum}/*                                            \
     && dnf clean all
 
-RUN python3 -m pip install uv==0.6.3
+RUN python3 -m pip install uv==0.6.14
 
 RUN npm install -g uglify-js uglifycss
 
@@ -38,5 +38,3 @@ WORKDIR /mnt/workdir
 ENTRYPOINT ["dumb-init", "--"]
 
 CMD ["bash"]
-
-ENV UV_LINK_MODE=copy

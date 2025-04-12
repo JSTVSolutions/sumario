@@ -40,7 +40,7 @@ fi
 
 readonly PODMAN_EXTRA_RUN_ARGS
 
-FLY_IMAGE=docker.io/flyio/flyctl:v0.3.87
+FLY_IMAGE=docker.io/flyio/flyctl:v0.3.101
 readonly FLY_IMAGE
 
 podman pull -q $FLY_IMAGE
