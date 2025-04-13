@@ -71,7 +71,7 @@ deploy:
   script:
     - | # https://gitlab.com/gitlab-org/gitlab-foss/-/issues/19421
       git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
-      make fly/set-secrets fly/deploy
+      make container/create-socket fly/set-secrets fly/deploy
   only:
     - main
   resource_group: production
