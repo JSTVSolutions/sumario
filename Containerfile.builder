@@ -31,7 +31,7 @@ RUN rm -rf /var/cache/{dnf,yum}/*                                               
 
 RUN python3 -m pip install uv==0.7.2
 
-RUN npm install -g uglify-js uglifycss
+RUN npm install -g minify@14.0.0
 
 WORKDIR /mnt/workdir
 

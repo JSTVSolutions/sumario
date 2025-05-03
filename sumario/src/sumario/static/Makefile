@@ -31,7 +31,7 @@ endif
 MIN_CSS = $(subst src/,build/,$(patsubst %.css,%.min.css,$(wildcard src/**/*.css)))
 
 build/css/%.min.css: src/css/%.css
-	@uglifycss $< > $@
+	@minify $< > $@
 
 .PHONY: minify-css
 minify-css: is-in-container $(MIN_CSS)
@@ -39,7 +39,7 @@ minify-css: is-in-container $(MIN_CSS)
 MIN_JS = $(subst src/,build/,$(patsubst %.js,%.min.js,$(wildcard src/**/*.js)))
 
 build/js/%.min.js: src/js/%.js
-	@uglifyjs $< > $@
+	@minify $< > $@
 
 .PHONY: minify-js
 minify-js: is-in-container $(MIN_JS)
