@@ -29,7 +29,7 @@ RUN rm -rf /var/cache/{dnf,yum}/*                                               
     && rm -rf /var/cache/{dnf,yum}/*                                            \
     && dnf clean all
 
-RUN python3 -m pip install uv==0.6.14
+RUN python3 -m pip install uv==0.7.2
 
 RUN npm install -g uglify-js uglifycss
 
