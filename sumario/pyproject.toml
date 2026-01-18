@@ -21,7 +21,7 @@ dependencies = [
     "psycopg2-binary",
     "pyyaml",
     "sentry-sdk[flask]",
-    "sqlalchemy-utils",
+    "sqlalchemy-utils==0.41.0",
     "stripe",
 ]
 urls = {homepage = "https://sumar.io"}
