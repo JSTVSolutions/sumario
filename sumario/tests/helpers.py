@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import os
 
-from datetime import datetime
 from functools import partial, wraps
 
 from flask import url_for as _url_for
@@ -69,7 +69,7 @@ def with_tst_user(fn):
         test_user.email = "foobar@example.mil"
         test_user.password = users.hash_password("password")
         test_user.active = True
-        test_user.email_confirmed_at = datetime.utcnow()
+        test_user.email_confirmed_at = datetime.datetime.now(datetime.UTC)
         db.session.add(test_user)
         db.session.commit()
         user_registered.send(test_app, user=test_user)

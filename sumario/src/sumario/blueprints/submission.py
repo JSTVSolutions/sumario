@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from urllib.parse import urljoin, quote as urlquote, unquote as urlunquote
+import datetime
 
-from datetime import datetime
+from urllib.parse import urljoin, quote as urlquote, unquote as urlunquote
 
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 
@@ -58,7 +58,7 @@ def submission(uuid):
     db.session.commit()
 
     extra_context = {
-        "now": datetime.utcnow().strftime("%Y-%m-%d %H:%M"),
+        "now": datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d %H:%M"),
         "form": request.form,
         "args": request.args,
     }
