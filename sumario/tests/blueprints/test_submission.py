@@ -18,7 +18,7 @@ from ..helpers import (
 def test_render_html_sorts_context(*args, **kwargs):
     extra_context = {"form": {"delta": 42, "bravo": 42, "charlie": 42, "alpha": 42, "8675309": 42}}
     bs = BS(submission.render_html(**extra_context), "html5lib")
-    sorted_keys = [row.text.strip() for row in bs.findAll("td", attrs={"class": "form-key"})]
+    sorted_keys = [row.text.strip() for row in bs.find_all("td", class_="form-key")]
     check_is_equal(sorted_keys, ["8675309", "alpha", "bravo", "charlie", "delta"])
 
 
