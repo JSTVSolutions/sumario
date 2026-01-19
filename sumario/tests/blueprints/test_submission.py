@@ -105,12 +105,12 @@ def test_submission_success_with_referrer(*args, **kwargs):
 @with_tst_client
 @with_tst_user
 @with_tst_relay
-def test_submission_user_not_in_good_standing(*args, **kwargs):
+def test_submission_user_not_has_credits(*args, **kwargs):
     test_client = kwargs["test_client"]
     test_relay = kwargs["test_relay"]
 
-    _user_in_good_standing_orig = submission._user_in_good_standing
-    submission._user_in_good_standing = lambda user: False
+    _user_has_credits_orig = submission._user_has_credits
+    submission._user_has_credits = lambda _user: False
 
     response = test_client.post(
         url_for("submission.submission", uuid=test_relay.uuid),
@@ -122,7 +122,7 @@ def test_submission_user_not_in_good_standing(*args, **kwargs):
     location = response.headers["Location"]
     check_is_equal(location, "http://localhost:8443/submission/nocredits?referrer=Hello%2C%20world%21")
 
-    submission._user_in_good_standing = _user_in_good_standing_orig
+    submission._user_has_credits = _user_has_credits_orig
 
 
 @with_tst_request_context

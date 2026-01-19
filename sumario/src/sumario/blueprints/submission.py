@@ -28,7 +28,7 @@ def _build_url(request, url):
     return "{}?referrer={}".format(urljoin(referrer, url), urlquote(referrer))
 
 
-def _user_in_good_standing(user):
+def _user_has_credits(user):
     return user.credit_pool.num_credits > 0
 
 
@@ -42,7 +42,7 @@ def submission(uuid):
     if not request.form:
         return redirect(_build_url(request, url_for("submission.possiblebot")))
 
-    if not _user_in_good_standing(relay.user):
+    if not _user_has_credits(relay.user):
         return redirect(_build_url(request, url_for("submission.nocredits")))
 
     new_submission = Submission()
