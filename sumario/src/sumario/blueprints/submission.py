@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import re
 
 from urllib.parse import urljoin, quote as urlquote, unquote as urlunquote
 
@@ -32,6 +33,31 @@ def _user_has_credits(user):
     return user.credit_pool.num_credits > 0
 
 
+def _has_whitespace(s):
+    return bool(re.search(r"\s", s))
+
+
+def _is_possible_bot(request):
+    if not request.form:
+        return True
+
+    for k, v in request.form.items():
+        name, *rest = k.split(":")
+
+        if not name:
+            return True
+
+        if not rest:
+            continue
+
+        check_spam = rest[0] == "check-spam"
+
+        if check_spam and not _has_whitespace(v):
+            return True
+
+    return False
+
+
 @submission_blueprint.route("/<uuid>", methods=["GET", "POST"])
 def submission(uuid):
     try:
@@ -39,7 +65,7 @@ def submission(uuid):
     except sqlalchemy.exc.StatementError:
         abort(404)
 
-    if not request.form:
+    if _is_possible_bot(request):
         return redirect(_build_url(request, url_for("submission.possiblebot")))
 
     if not _user_has_credits(relay.user):

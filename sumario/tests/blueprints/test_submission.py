@@ -167,3 +167,86 @@ def test_submission_possible_bot(*args, **kwargs):
 
     response = test_client.get(location)
     check_is_equal(response.status_code, 200)
+
+
+@with_tst_request_context
+@with_tst_client
+@with_tst_user
+@with_tst_relay
+def test_submission_possible_bot_no_form(*args, **kwargs):
+    test_client = kwargs["test_client"]
+    test_relay = kwargs["test_relay"]
+
+    response = test_client.post(url_for("submission.submission", uuid=test_relay.uuid))
+    check_is_equal(response.status_code, 302)
+
+    location = response.headers["Location"]
+    check_is_equal(location, "http://localhost:8443/submission/possiblebot?referrer=")
+
+    response = test_client.get(location)
+    check_is_equal(response.status_code, 200)
+
+
+@with_tst_request_context
+@with_tst_client
+@with_tst_user
+@with_tst_relay
+def test_submission_possible_bot_no_name(*args, **kwargs):
+    test_client = kwargs["test_client"]
+    test_relay = kwargs["test_relay"]
+
+    response = test_client.post(
+        url_for("submission.submission", uuid=test_relay.uuid),
+        data={"": "foobar"},
+    )
+    check_is_equal(response.status_code, 302)
+
+    location = response.headers["Location"]
+    check_is_equal(location, "http://localhost:8443/submission/possiblebot?referrer=")
+
+    response = test_client.get(location)
+    check_is_equal(response.status_code, 200)
+
+
+@with_tst_request_context
+@with_tst_client
+@with_tst_user
+@with_tst_relay
+def test_submission_possible_bot_is_spam(*args, **kwargs):
+    test_client = kwargs["test_client"]
+    test_relay = kwargs["test_relay"]
+
+    response = test_client.post(
+        url_for("submission.submission", uuid=test_relay.uuid),
+        data={"message:check-spam": "foobar"},
+    )
+    check_is_equal(response.status_code, 302)
+
+    location = response.headers["Location"]
+    check_is_equal(location, "http://localhost:8443/submission/possiblebot?referrer=")
+
+    response = test_client.get(location)
+    check_is_equal(response.status_code, 200)
+
+
+@with_tst_request_context
+@with_tst_client
+@with_tst_user
+@with_tst_relay
+def test_submission_possible_bot_is_not_spam(*args, **kwargs):
+    test_client = kwargs["test_client"]
+    test_relay = kwargs["test_relay"]
+
+    check_is_equal(test_relay.submissions.count(), 0)
+
+    response = test_client.post(
+        url_for("submission.submission", uuid=test_relay.uuid),
+        data={"message:check-spam": "The quick brown fox jumps over the lazy dog"},
+    )
+    check_is_equal(response.status_code, 302)
+
+    location = response.headers["Location"]
+    check_is_equal(location, "http://localhost:8443/success?referrer=")
+
+    submission = test_relay.submissions.one()
+    check_is_equal(submission.client_addr, "127.0.0.1")
